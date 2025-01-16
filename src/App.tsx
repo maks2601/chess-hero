@@ -1,13 +1,16 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import './App.css';
-import BoardComponent from "./components/BoardComponent";
-import {Board} from "./models/Board";
+import Board from "./components/Board.tsx";
+import {BoardData} from "./models/BoardData.ts";
+import BoardForm from "./components/BoardForm.tsx";
 
 function App() {
-    const [board, setBoard] = useState(new Board(8, 8));
+    const [board, setBoard] = useState(new BoardData(8, 8));
+
     return (
         <div className="App">
-            <BoardComponent board={board}/>
+            <BoardForm setBoard={setBoard}/>
+            <Board board={board}/>
         </div>
     );
 }

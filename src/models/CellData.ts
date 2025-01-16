@@ -1,6 +1,6 @@
 import {Colors} from "./Colors";
 
-export class Cell {
+export class CellData {
     readonly x: number;
     readonly y: number;
     readonly color: Colors;

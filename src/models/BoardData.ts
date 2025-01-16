@@ -1,10 +1,10 @@
-import {Cell} from "./Cell";
+import {CellData} from "./CellData.ts";
 import {Colors} from "./Colors";
 
-export class Board {
+export class BoardData {
     readonly width: number;
     readonly height: number;
-    readonly cells: Cell[][];
+    readonly cells: CellData[][];
 
     constructor(width: number, height: number) {
         this.width = width;
@@ -12,10 +12,10 @@ export class Board {
         this.cells = [];
 
         for (let i = 0; i < height; i++) {
-            const row: Cell[] = [];
+            const row: CellData[] = [];
             for (let j = 0; j < width; j++) {
-                const color = j % 2 === 0 ? Colors.BLACK : Colors.WHITE;
-                row.push(new Cell(i, j, color));
+                const color = (i + j) % 2 === 0 ? Colors.BLACK : Colors.WHITE;
+                row.push(new CellData(i, j, color));
             }
             this.cells.push(row);
         }
