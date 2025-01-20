@@ -5,11 +5,16 @@ import Piece from "./Piece.tsx";
 
 interface CellProps {
     cell: CellData;
+    selected: boolean;
+    onClick: (cell: CellData) => void;
 }
 
-const Cell: FC<CellProps> = ({cell}) => {
+const Cell: FC<CellProps> = ({cell, selected, onClick}) => {
+    const cellClassName = [styles.cell, styles[cell.color], selected ? styles.selected : ""].join(" ");
+
     return (
-        <div className={`${styles.cell} ${styles[cell.color]}`}>
+        <div onClick={() => onClick(cell)} className={cellClassName}>
+            <div className={styles.available}/>
             {cell.piece && <Piece piece={cell.piece}/>}
         </div>
     );

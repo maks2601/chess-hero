@@ -16,15 +16,26 @@
 }
 
 .cell.black {
-    background-color: darkgreen;
+    background-color: brown;
 }
 
 .cell.white {
-    background-color: palegreen;
+    background-color: orange;
 }
 
 .piece {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+.selected {
+    border: 2px solid red;
+}
+
+.available {
+    width: 25%;
+    height: 25%;
+    border-radius: 50%;
+    background-color: lawngreen;
 }
