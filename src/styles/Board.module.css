@@ -7,14 +7,24 @@
 }
 
 .cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
+    box-sizing: border-box;
 }
 
 .cell.black {
-    background-color: #000;
+    background-color: darkgreen;
 }
 
 .cell.white {
-    background-color: #fff;
+    background-color: palegreen;
+}
+
+.piece {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
 }

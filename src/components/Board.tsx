@@ -11,10 +11,11 @@ const Board: FC<BoardProps> = ({board}) => {
     return (
         <div className={styles.board} style={{
             gridTemplateColumns: `repeat(${board.width}, 1fr)`,
+            gridTemplateRows: `repeat(${board.height}, 1fr)`,
             aspectRatio: `${board.width}/${board.height}`,
         }}>
-            {board.cells.map(row => row.map(cell =>{
-                return <Cell cell={cell}/>;
+            {board.cells.map(row => row.map(cell => {
+                return <Cell cell={cell} key={cell.id}/>;
             }))}
         </div>
     );
