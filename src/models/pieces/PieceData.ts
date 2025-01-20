@@ -1,5 +1,5 @@
 import {Colors} from "../Colors.ts";
-import Logo from "../../assets/pawn-white.png";
+import Logo from "../../assets/pieces/wP.png";
 
 export class PieceData {
     color: Colors;

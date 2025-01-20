@@ -1,7 +1,7 @@
 import {PieceData} from "./PieceData.ts";
 import {Colors} from "../Colors.ts";
-import whiteLogo from "../../assets/queen-white.png";
-import blackLogo from "../../assets/queen-black.png";
+import whiteLogo from "../../assets/pieces/wQ.png";
+import blackLogo from "../../assets/pieces/bQ.png";
 
 export class QueenData extends PieceData {
     constructor(color: Colors) {

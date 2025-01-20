@@ -1,7 +1,7 @@
 import {PieceData} from "./PieceData.ts";
 import {Colors} from "../Colors.ts";
-import whiteLogo from "../../assets/pawn-white.png";
-import blackLogo from "../../assets/pawn-black.png";
+import whiteLogo from "../../assets/pieces/wP.png";
+import blackLogo from "../../assets/pieces/bP.png";
 
 export class PawnData extends PieceData {
     constructor(color: Colors) {

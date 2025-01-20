@@ -1,7 +1,7 @@
 import {PieceData} from "./PieceData.ts";
 import {Colors} from "../Colors.ts";
-import whiteLogo from "../../assets/bishop-white.png";
-import blackLogo from "../../assets/bishop-black.png";
+import whiteLogo from "../../assets/pieces/wB.png";
+import blackLogo from "../../assets/pieces/bB.png";
 
 export class BishopData extends PieceData {
     constructor(color: Colors) {

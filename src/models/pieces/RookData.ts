@@ -1,7 +1,7 @@
 import {PieceData} from "./PieceData.ts";
 import {Colors} from "../Colors.ts";
-import whiteLogo from "../../assets/rook-white.png";
-import blackLogo from "../../assets/rook-black.png";
+import whiteLogo from "../../assets/pieces/wR.png";
+import blackLogo from "../../assets/pieces/bR.png";
 
 export class RookData extends PieceData {
     constructor(color: Colors) {
