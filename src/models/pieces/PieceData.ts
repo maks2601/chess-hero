@@ -16,12 +16,12 @@ export class PieceData {
     }
 
     // @ts-ignore
-    getAvailableCells(board : BoardData): SquareData[] {
+    getAvailableSquares(board : BoardData): SquareData[] {
         return [];
     }
 
     isPossibleMove(board: BoardData, coords: Coordinates) {
-        return this.getAvailableCells(board).find(square => square.coordinates.equals(coords));
+        return this.getAvailableSquares(board).find(square => square.coordinates.equals(coords));
     }
 
     move(board : BoardData, coords : Coordinates) {

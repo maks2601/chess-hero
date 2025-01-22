@@ -23,7 +23,7 @@ const Board: FC<BoardProps> = ({board}) => {
         }
 
         if (square.piece) {
-            square.piece.getAvailableCells(board).forEach(square => square.isAvailable = true);
+            square.piece.getAvailableSquares(board).forEach(square => square.isAvailable = true);
         }
 
         setSelectedSquare(square);

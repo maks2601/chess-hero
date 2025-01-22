@@ -13,7 +13,7 @@ export class BishopData extends PieceData {
         this.logo = color === Colors.WHITE ? whiteLogo : blackLogo;
     }
 
-    getAvailableCells(board: BoardData): SquareData[] {
-        return super.getAvailableCells(board);
+    getAvailableSquares(board: BoardData): SquareData[] {
+        return super.getAvailableSquares(board);
     }
 }

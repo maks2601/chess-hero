@@ -13,20 +13,24 @@ export class PawnData extends PieceData {
         this.logo = color === Colors.WHITE ? whiteLogo : blackLogo;
     }
 
-    getAvailableCells(board: BoardData): SquareData[] {
-        const cells = super.getAvailableCells(board);
+    getAvailableSquares(board: BoardData): SquareData[] {
+        const squares = super.getAvailableSquares(board);
 
-        const possibleSquares = [new Coordinates(0, this.getDirection())];
+        const direction = new Coordinates(0, this.getDirection());
+        let nextSquare = board.getSquare(Coordinates.add(this.coordinates, direction));
 
-        if (this.isStartPosition(board)) {
-            possibleSquares.push(new Coordinates(0, this.getDirection() * 2));
+        if (nextSquare.isFree()) {
+            squares.push(nextSquare);
+
+            if (this.isStartPosition(board)) {
+                nextSquare = board.getSquare(Coordinates.add(this.coordinates, direction.multiply(2)));
+                if (nextSquare.isFree()) {
+                    squares.push(nextSquare);
+                }
+            }
         }
 
-        possibleSquares.forEach(coordinates => {
-            cells.push(board.getSquare(Coordinates.add(coordinates, this.coordinates)));
-        })
-
-        return cells;
+        return squares;
     }
 
     getDirection() {
