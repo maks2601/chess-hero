@@ -19,12 +19,12 @@ export class PawnData extends PieceData {
         const direction = new Coordinates(0, this.getDirection());
         let nextSquare = board.getSquare(Coordinates.add(this.coordinates, direction));
 
-        if (nextSquare.isFree()) {
+        if (nextSquare && !nextSquare.piece) {
             squares.push(nextSquare);
 
             if (this.isStartPosition(board)) {
                 nextSquare = board.getSquare(Coordinates.add(this.coordinates, direction.multiply(2)));
-                if (nextSquare.isFree()) {
+                if (nextSquare && !nextSquare.piece) {
                     squares.push(nextSquare);
                 }
             }

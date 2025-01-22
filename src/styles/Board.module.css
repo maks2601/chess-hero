@@ -13,14 +13,15 @@
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    position: relative;
 }
 
 .square.black {
-    background-color: brown;
+    background-color: dodgerblue;
 }
 
 .square.white {
-    background-color: orange;
+    background-color: whitesmoke;
 }
 
 .piece {
@@ -37,5 +38,6 @@
     width: 25%;
     height: 25%;
     border-radius: 50%;
-    background-color: lawngreen;
+    position: absolute;
+    background-color: green;
 }

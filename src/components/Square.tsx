@@ -14,8 +14,8 @@ const Square: FC<SquareProps> = ({square, selected, onClick}) => {
 
     return (
         <div onClick={() => onClick(square)} className={squareClassName}>
-            <div className={square.isAvailable ? styles.available : ""}/>
             {square.piece && <Piece piece={square.piece}/>}
+            <div className={square.isAvailable ? styles.available : ""}/>
         </div>
     );
 };

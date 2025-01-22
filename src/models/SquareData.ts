@@ -20,8 +20,4 @@ export class SquareData {
     setFigure(figure: PieceData) {
         this.piece = figure;
     }
-
-    isFree(): boolean {
-        return this.piece === null;
-    }
 }

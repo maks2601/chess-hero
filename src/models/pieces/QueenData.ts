@@ -14,6 +14,7 @@ export class QueenData extends PieceData {
     }
 
     getAvailableSquares(board: BoardData): SquareData[] {
-        return super.getAvailableSquares(board);
+        const possibleDirections = [Coordinates.diagonals, Coordinates.files, Coordinates.ranks].flat();
+        return this.getMovesInDirection(board, possibleDirections);
     }
 }

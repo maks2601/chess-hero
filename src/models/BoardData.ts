@@ -34,7 +34,11 @@ export class BoardData {
     }
 
     getSquare(coordinates: Coordinates) {
-        return this.squares[coordinates.x][coordinates.y];
+        if (coordinates.x >= 0 && coordinates.x < this.width && coordinates.y >= 0 && coordinates.y <= this.height) {
+            return this.squares[coordinates.x][coordinates.y];
+        }
+
+        return null;
     }
 
     fillBoard() {

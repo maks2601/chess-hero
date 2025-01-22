@@ -14,6 +14,6 @@ export class BishopData extends PieceData {
     }
 
     getAvailableSquares(board: BoardData): SquareData[] {
-        return super.getAvailableSquares(board);
+        return this.getMovesInDirection(board, Coordinates.diagonals);
     }
 }

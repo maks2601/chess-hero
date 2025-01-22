@@ -14,6 +14,17 @@ export class KnightData extends PieceData {
     }
 
     getAvailableSquares(board: BoardData): SquareData[] {
-        return super.getAvailableSquares(board);
+        const squares = super.getAvailableSquares(board);
+
+        const possibleJumps = [Coordinates.files.flatMap(file => Coordinates.ranks.flatMap(rank => [Coordinates.add(rank.multiply(2), file), Coordinates.add(rank, file.multiply(2))]))].flat();
+
+        possibleJumps.forEach(jump => {
+            const square = board.getSquare(Coordinates.add(this.coordinates, jump));
+            if (square && (!square.piece || square.piece.color !== this.color)) {
+                squares.push(square);
+            }
+        })
+
+        return squares;
     }
 }

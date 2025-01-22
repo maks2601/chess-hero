@@ -14,6 +14,17 @@ export class KingData extends PieceData {
     }
 
     getAvailableSquares(board: BoardData): SquareData[] {
-        return super.getAvailableSquares(board);
+        const squares =  super.getAvailableSquares(board);
+
+        const possibleDirections = [Coordinates.diagonals, Coordinates.files, Coordinates.ranks].flat();
+
+        possibleDirections.forEach(dir => {
+            const square = board.getSquare(Coordinates.add(this.coordinates, dir));
+            if(square && (!square.piece || square.piece.color !== this.color)) {
+                squares.push(square);
+            }
+        })
+
+        return squares;
     }
 }
