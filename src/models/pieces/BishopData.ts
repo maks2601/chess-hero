@@ -4,7 +4,7 @@ import whiteLogo from "../../assets/pieces/wB.png";
 import blackLogo from "../../assets/pieces/bB.png";
 import {Coordinates} from "../Coordinates.ts";
 import {BoardData} from "../BoardData.ts";
-import {CellData} from "../CellData.ts";
+import {SquareData} from "../SquareData.ts";
 
 export class BishopData extends PieceData {
     constructor(color: Colors, coordinates: Coordinates) {
@@ -13,7 +13,7 @@ export class BishopData extends PieceData {
         this.logo = color === Colors.WHITE ? whiteLogo : blackLogo;
     }
 
-    getAvailableCells(board: BoardData): CellData[] {
+    getAvailableCells(board: BoardData): SquareData[] {
         return super.getAvailableCells(board);
     }
 }

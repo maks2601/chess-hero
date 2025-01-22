@@ -2,7 +2,7 @@ import {Colors} from "./Colors";
 import {PieceData} from "./pieces/PieceData.ts";
 import {Coordinates} from "./Coordinates.ts";
 
-export class CellData {
+export class SquareData {
     readonly coordinates: Coordinates;
     readonly color: Colors;
     readonly id: string;

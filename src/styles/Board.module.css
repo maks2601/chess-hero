@@ -6,7 +6,7 @@
     border: 2px solid black;
 }
 
-.cell {
+.square {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,11 +15,11 @@
     box-sizing: border-box;
 }
 
-.cell.black {
+.square.black {
     background-color: brown;
 }
 
-.cell.white {
+.square.white {
     background-color: orange;
 }
 

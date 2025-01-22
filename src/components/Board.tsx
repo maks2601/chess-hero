@@ -1,29 +1,29 @@
-import Cell from "./Cell.tsx";
+import Square from "./Square.tsx";
 import {BoardData} from "../models/BoardData.ts";
 import {FC, useState} from "react";
 import styles from "../styles/Board.module.css"
-import {CellData} from "../models/CellData.ts";
+import {SquareData} from "../models/SquareData.ts";
 
 interface BoardProps {
     board: BoardData;
 }
 
 const Board: FC<BoardProps> = ({board}) => {
-    const [selectedCell, setSelectedCell] = useState<CellData | null>(null);
+    const [selectedSquare, setSelectedSquare] = useState<SquareData | null>(null);
 
-    const selectCell = (cell: CellData) => {
-        board.cells.forEach(row => row.forEach(cell => cell.isAvailable = false));
+    const selectSquare = (square: SquareData) => {
+        board.squares.forEach(row => row.forEach(square => square.isAvailable = false));
 
-        if (cell.piece) {
-            cell.piece.getAvailableCells(board).forEach(cell => cell.isAvailable = true);
+        if (square.piece) {
+            square.piece.getAvailableCells(board).forEach(square => square.isAvailable = true);
         }
 
-        setSelectedCell(cell);
+        setSelectedSquare(square);
     }
 
     const transposedBoard = board.playingWhite ?
-        board.cells[0].map((_, colIndex) => board.cells.map(row => row[board.height - colIndex - 1]))
-        : board.cells[0].map((_, colIndex) => board.cells.map(row => row[colIndex]));
+        board.squares[0].map((_, colIndex) => board.squares.map(row => row[board.height - colIndex - 1]))
+        : board.squares[0].map((_, colIndex) => board.squares.map(row => row[colIndex]));
 
     return (
         <div className={styles.board} style={{
@@ -31,12 +31,12 @@ const Board: FC<BoardProps> = ({board}) => {
             gridTemplateRows: `repeat(${board.height}, 1fr)`,
             aspectRatio: `${board.width}/${board.height}`,
         }}>
-            {transposedBoard.map(row => row.map(cell =>
-                <Cell
-                    cell={cell}
-                    selected={selectedCell === cell}
-                    onClick={selectCell}
-                    key={cell.id}
+            {transposedBoard.map(row => row.map(square =>
+                <Square
+                    square={square}
+                    selected={selectedSquare === square}
+                    onClick={selectSquare}
+                    key={square.id}
                 />
             ))}
         </div>

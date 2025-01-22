@@ -2,7 +2,7 @@ import {PieceData} from "./PieceData.ts";
 import {Colors} from "../Colors.ts";
 import whiteLogo from "../../assets/pieces/wP.png";
 import blackLogo from "../../assets/pieces/bP.png";
-import {CellData} from "../CellData.ts";
+import {SquareData} from "../SquareData.ts";
 import {BoardData} from "../BoardData.ts";
 import {Coordinates} from "../Coordinates.ts";
 
@@ -13,7 +13,7 @@ export class PawnData extends PieceData {
         this.logo = color === Colors.WHITE ? whiteLogo : blackLogo;
     }
 
-    getAvailableCells(board: BoardData): CellData[] {
+    getAvailableCells(board: BoardData): SquareData[] {
         const cells = super.getAvailableCells(board);
 
         const possibleSquares = [new Coordinates(0, this.getDirection())];
@@ -23,7 +23,7 @@ export class PawnData extends PieceData {
         }
 
         possibleSquares.forEach(coordinates => {
-            cells.push(board.getCell(Coordinates.add(coordinates, this.coordinates)));
+            cells.push(board.getSquare(Coordinates.add(coordinates, this.coordinates)));
         })
 
         return cells;
