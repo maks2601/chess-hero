@@ -19,4 +19,14 @@ export class PieceData {
     getAvailableCells(board : BoardData): SquareData[] {
         return [];
     }
+
+    isPossibleMove(board: BoardData, coords: Coordinates) {
+        return this.getAvailableCells(board).find(square => square.coordinates.equals(coords));
+    }
+
+    move(board : BoardData, coords : Coordinates) {
+        board.getSquare(this.coordinates).piece = null;
+        this.coordinates = coords;
+        board.getSquare(this.coordinates).piece = this;
+    }
 }

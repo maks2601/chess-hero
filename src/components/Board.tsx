@@ -14,6 +14,14 @@ const Board: FC<BoardProps> = ({board}) => {
     const selectSquare = (square: SquareData) => {
         board.squares.forEach(row => row.forEach(square => square.isAvailable = false));
 
+        if (selectedSquare?.piece
+            && !selectedSquare.coordinates.equals(square.coordinates)
+            && selectedSquare.piece.isPossibleMove(board, square.coordinates)) {
+            selectedSquare.piece.move(board, square.coordinates);
+            setSelectedSquare(null);
+            return;
+        }
+
         if (square.piece) {
             square.piece.getAvailableCells(board).forEach(square => square.isAvailable = true);
         }
