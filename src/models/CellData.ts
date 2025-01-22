@@ -1,22 +1,27 @@
 import {Colors} from "./Colors";
 import {PieceData} from "./pieces/PieceData.ts";
+import {Coordinates} from "./Coordinates.ts";
 
 export class CellData {
-    readonly x: number;
-    readonly y: number;
+    readonly coordinates: Coordinates;
     readonly color: Colors;
     readonly id: string;
     piece: PieceData | null;
+    isAvailable: boolean;
 
-    constructor(x: number, y: number, color: Colors) {
-        this.x = x;
-        this.y = y;
-        this.id = `${x}-${y}`;
+    constructor(coordinates: Coordinates, color: Colors) {
+        this.coordinates = coordinates;
+        this.id = `${coordinates.x}-${coordinates.y}`;
         this.color = color;
         this.piece = null;
+        this.isAvailable = false;
     }
 
     setFigure(figure: PieceData) {
         this.piece = figure;
+    }
+
+    isFree(): boolean {
+        return this.piece === null;
     }
 }

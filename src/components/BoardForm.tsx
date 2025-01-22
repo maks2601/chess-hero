@@ -1,16 +1,17 @@
 import {FC, FormEvent, useState} from "react";
 
 interface BoardFormProps {
-    createBoard(width: number, height: number): void;
+    createBoard(width: number, height: number, playingWhite: boolean): void;
 }
 
 const BoardForm: FC<BoardFormProps> = ({createBoard}) => {
     const [width, setWidth] = useState(8);
     const [height, setHeight] = useState(8);
+    const [playingWhite, setPlayingWhite] = useState(true);
 
     const processForm = (e: FormEvent) => {
         e.preventDefault();
-        createBoard(width, height);
+        createBoard(width, height, playingWhite);
     }
 
     return (
@@ -32,6 +33,14 @@ const BoardForm: FC<BoardFormProps> = ({createBoard}) => {
                     min="1"
                     onChange={(e) => setHeight(parseInt(e.target.value))}
                 />
+            </label>
+            <label>
+                <input
+                    type="checkbox"
+                    checked={playingWhite}
+                    onChange={(e) => setPlayingWhite(e.target.checked)}
+                />
+                Playing white
             </label>
             <button type="submit">Apply</button>
         </form>

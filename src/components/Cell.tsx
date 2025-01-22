@@ -14,7 +14,7 @@ const Cell: FC<CellProps> = ({cell, selected, onClick}) => {
 
     return (
         <div onClick={() => onClick(cell)} className={cellClassName}>
-            <div className={styles.available}/>
+            <div className={cell.isAvailable ? styles.available : ""}/>
             {cell.piece && <Piece piece={cell.piece}/>}
         </div>
     );
