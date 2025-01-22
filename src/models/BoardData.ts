@@ -42,29 +42,29 @@ export class BoardData {
             for (let j = 0; j < this.height; j++) {
                 const cell = this.cells[i][j];
                 if (j === 1) {
-                    cell.setFigure(new PawnData(Colors.WHITE, cell));
+                    cell.setFigure(new PawnData(Colors.WHITE, cell.coordinates));
                 } else if (j === this.height - 2) {
-                    cell.setFigure(new PawnData(Colors.BLACK, cell));
+                    cell.setFigure(new PawnData(Colors.BLACK, cell.coordinates));
                 } else if (j === 0 || j === this.height - 1) {
                     const pieceColor = j === 0 ? Colors.WHITE : Colors.BLACK;
                     switch (i) {
                         case 4:
-                            cell.setFigure(new KingData(pieceColor, cell));
+                            cell.setFigure(new KingData(pieceColor, cell.coordinates));
                             break;
                         case 3:
-                            cell.setFigure(new QueenData(pieceColor, cell));
+                            cell.setFigure(new QueenData(pieceColor, cell.coordinates));
                             break;
                         case 0:
                         case this.width - 1:
-                            cell.setFigure(new RookData(pieceColor, cell));
+                            cell.setFigure(new RookData(pieceColor, cell.coordinates));
                             break;
                         case 1:
                         case this.width - 2:
-                            cell.setFigure(new KnightData(pieceColor, cell));
+                            cell.setFigure(new KnightData(pieceColor, cell.coordinates));
                             break;
                         case 2:
                         case this.width - 3:
-                            cell.setFigure(new BishopData(pieceColor, cell));
+                            cell.setFigure(new BishopData(pieceColor, cell.coordinates));
                             break;
                     }
                 }
