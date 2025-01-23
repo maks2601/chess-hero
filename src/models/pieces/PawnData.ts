@@ -16,7 +16,7 @@ export class PawnData extends PieceData {
     getAvailableSquares(board: BoardData): SquareData[] {
         const squares = super.getAvailableSquares(board);
 
-        const direction = new Coordinates(0, this.getDirection());
+        const direction = this.getDirection();
         let nextSquare = board.getSquare(Coordinates.add(this.coordinates, direction));
 
         if (nextSquare && !nextSquare.piece) {
@@ -34,7 +34,7 @@ export class PawnData extends PieceData {
     }
 
     getDirection() {
-        return this.color === Colors.WHITE ? 1 : -1;
+        return this.color === Colors.WHITE ? Coordinates.up : Coordinates.down;
     }
 
     isStartPosition(board: BoardData): boolean {

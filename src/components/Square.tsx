@@ -10,12 +10,17 @@ interface SquareProps {
 }
 
 const Square: FC<SquareProps> = ({square, selected, onClick}) => {
-    const squareClassName = [styles.square, styles[square.color], selected ? styles.selected : ""].join(" ");
+    const squareClassName = [styles.square, styles[square.color]].join(" ");
+    const highlightClassName = [
+        selected ? styles.selected : "",
+        square.isAvailable ? styles.available : "",
+        square.piece ? styles.occupied : styles.free
+    ].join(" ");
 
     return (
         <div onClick={() => onClick(square)} className={squareClassName}>
             {square.piece && <Piece piece={square.piece}/>}
-            <div className={square.isAvailable ? styles.available : ""}/>
+            <div className={highlightClassName}/>
         </div>
     );
 };
