@@ -18,22 +18,20 @@ const Board: FC<BoardProps> = ({board}) => {
     const [currentSquare, setCurrentSquare] = useState<SquareData | null>(null);
 
     const selectSquare = (square: SquareData) => {
-        updateAvailableSquares(square.piece);
+        let squareToSelect = null;
 
         if (selectedSquare === square) {
             setSelectedSquare(null);
-            return;
-        }
-
-        if (selectedSquare?.piece
-            && !selectedSquare.coordinates.equals(square.coordinates)
+        } else if (selectedSquare?.piece
             && selectedSquare.piece.isPossibleMove(board, square.coordinates)) {
             selectedSquare.piece.move(board, square.coordinates);
             setSelectedSquare(null);
-            return;
+        } else {
+            squareToSelect = square;
+            setSelectedSquare(square);
         }
 
-        setSelectedSquare(square);
+        updateAvailableSquares(squareToSelect ? squareToSelect.piece : null);
     }
 
     const touchPiece = (piece: PieceData, touch: TouchData) => {
@@ -43,8 +41,7 @@ const Board: FC<BoardProps> = ({board}) => {
                 const square = squares.get(element);
                 if (square) {
                     if (touch.state === TouchState.END) {
-                        if (!piece.coordinates.equals(square.coordinates)
-                            && piece.isPossibleMove(board, square.coordinates)) {
+                        if (piece.isPossibleMove(board, square.coordinates)) {
                             piece.move(board, square.coordinates);
                             setCurrentSquare(null);
                         }
@@ -80,8 +77,8 @@ const Board: FC<BoardProps> = ({board}) => {
                 <Square
                     square={square}
                     selected={(square === selectedSquare && square.piece !== null) || (square === currentSquare && square.isAvailable)}
-                    onClick={selectSquare}
-                    onTouch={touchPiece}
+                    onTouch={selectSquare}
+                    onTouchPiece={touchPiece}
                     key={square.id}
                 />
             ))}
