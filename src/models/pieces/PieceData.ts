@@ -21,6 +21,10 @@ export class PieceData {
     }
 
     isPossibleMove(board: BoardData, coords: Coordinates) {
+        if (board.sideToMove !== this.color) {
+            return false;
+        }
+
         return this.getAvailableSquares(board).find(square => square.coordinates.equals(coords));
     }
 
@@ -28,6 +32,7 @@ export class PieceData {
         board.getSquare(this.coordinates).piece = null;
         this.coordinates = coords;
         board.getSquare(this.coordinates).piece = this;
+        board.switchTurn();
     }
 
     getMovesInDirection(board: BoardData, directions: Coordinates[]): SquareData[] {

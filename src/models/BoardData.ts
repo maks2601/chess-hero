@@ -13,12 +13,14 @@ export class BoardData {
     readonly height: number;
     squares: SquareData[][];
     playingWhite: boolean;
+    sideToMove: Colors;
 
     constructor(width: number, height: number, playingWhite: boolean) {
         this.width = width;
         this.height = height;
         this.squares = [];
         this.playingWhite = playingWhite;
+        this.sideToMove = Colors.WHITE;
         this.createBoard(width, height)
     }
 
@@ -74,5 +76,9 @@ export class BoardData {
                 }
             }
         }
+    }
+
+    switchTurn() {
+        this.sideToMove = this.sideToMove === Colors.WHITE ? Colors.BLACK : Colors.WHITE;
     }
 }

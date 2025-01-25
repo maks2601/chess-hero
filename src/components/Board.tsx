@@ -60,7 +60,10 @@ const Board: FC<BoardProps> = ({board, showHints}) => {
         board.squares.forEach(row => row.forEach(square => square.isAvailable = false));
 
         if (piece) {
-            piece.getAvailableSquares(board).forEach(square => square.isAvailable = true);
+            piece.getAvailableSquares(board).forEach(square => {
+                if (piece.isPossibleMove(board, square.coordinates))
+                    square.isAvailable = true
+            });
         }
     }
 
