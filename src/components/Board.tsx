@@ -9,11 +9,12 @@ import {TouchData} from "../models/input/TouchData.ts";
 
 interface BoardProps {
     board: BoardData;
+    showHints: boolean;
 }
 
 const squares = new Map<any, SquareData>();
 
-const Board: FC<BoardProps> = ({board}) => {
+const Board: FC<BoardProps> = ({board, showHints}) => {
     const [selectedSquare, setSelectedSquare] = useState<SquareData | null>(null);
     const [currentSquare, setCurrentSquare] = useState<SquareData | null>(null);
 
@@ -77,6 +78,7 @@ const Board: FC<BoardProps> = ({board}) => {
                 <Square
                     square={square}
                     selected={(square === selectedSquare && square.piece !== null) || (square === currentSquare && square.isAvailable)}
+                    showHints={showHints}
                     onTouch={selectSquare}
                     onTouchPiece={touchPiece}
                     key={square.id}

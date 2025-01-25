@@ -1,17 +1,18 @@
 import {FC, FormEvent, useState} from "react";
 
 interface BoardFormProps {
-    createBoard(width: number, height: number, playingWhite: boolean): void;
+    createBoard(width: number, height: number, playingWhite: boolean, showHints: boolean): void;
 }
 
 const BoardForm: FC<BoardFormProps> = ({createBoard}) => {
     const [width, setWidth] = useState(8);
     const [height, setHeight] = useState(8);
     const [playingWhite, setPlayingWhite] = useState(true);
+    const [showHints, setShowHints] = useState(false);
 
     const processForm = (e: FormEvent) => {
         e.preventDefault();
-        createBoard(width, height, playingWhite);
+        createBoard(width, height, playingWhite, showHints);
     }
 
     return (
@@ -41,6 +42,14 @@ const BoardForm: FC<BoardFormProps> = ({createBoard}) => {
                     onChange={(e) => setPlayingWhite(e.target.checked)}
                 />
                 Playing white
+            </label>
+            <label>
+                <input
+                    type="checkbox"
+                    checked={showHints}
+                    onChange={(e) => setShowHints(e.target.checked)}
+                />
+                Show hints
             </label>
             <button type="submit">Apply</button>
         </form>
