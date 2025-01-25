@@ -1,18 +1,24 @@
 import Square from "./Square.tsx";
 import {BoardData} from "../models/BoardData.ts";
-import {FC, useState} from "react";
+import {FC, Touch, useState} from "react";
 import styles from "../styles/Board.module.css"
 import {SquareData} from "../models/SquareData.ts";
+import {PieceData} from "../models/pieces/PieceData.ts";
+import {TouchState} from "../models/input/TouchState.ts";
+import {TouchData} from "../models/input/TouchData.ts";
 
 interface BoardProps {
     board: BoardData;
 }
 
+const squares = new Map<any, SquareData>();
+
 const Board: FC<BoardProps> = ({board}) => {
     const [selectedSquare, setSelectedSquare] = useState<SquareData | null>(null);
+    const [currentSquare, setCurrentSquare] = useState<SquareData | null>(null);
 
     const selectSquare = (square: SquareData) => {
-        board.squares.forEach(row => row.forEach(square => square.isAvailable = false));
+        updateAvailableSquares(square.piece);
 
         if (selectedSquare === square) {
             setSelectedSquare(null);
@@ -27,11 +33,37 @@ const Board: FC<BoardProps> = ({board}) => {
             return;
         }
 
-        if (square.piece) {
-            square.piece.getAvailableSquares(board).forEach(square => square.isAvailable = true);
-        }
-
         setSelectedSquare(square);
+    }
+
+    const touchPiece = (piece: PieceData, touch: TouchData) => {
+        const elements = document.elementsFromPoint(touch.x, touch.y);
+        elements.forEach(element => {
+            if (element.className.includes(styles.square)) {
+                const square = squares.get(element);
+                if (square) {
+                    if (touch.state === TouchState.END) {
+                        if (!piece.coordinates.equals(square.coordinates)
+                            && piece.isPossibleMove(board, square.coordinates)) {
+                            piece.move(board, square.coordinates);
+                            setCurrentSquare(null);
+                            return;
+                        }
+                    } else {
+                        updateAvailableSquares(piece);
+                        setCurrentSquare(square);
+                    }
+                }
+            }
+        })
+    }
+
+    const updateAvailableSquares = (piece: PieceData | null) => {
+        board.squares.forEach(row => row.forEach(square => square.isAvailable = false));
+
+        if (piece) {
+            piece.getAvailableSquares(board).forEach(square => square.isAvailable = true);
+        }
     }
 
     const transposedBoard = board.playingWhite ?
@@ -47,8 +79,9 @@ const Board: FC<BoardProps> = ({board}) => {
             {transposedBoard.map(row => row.map(square =>
                 <Square
                     square={square}
-                    selected={selectedSquare === square}
+                    selected={(square === selectedSquare && square.piece !== null) || (square === currentSquare)}
                     onClick={selectSquare}
+                    onTouch={touchPiece}
                     key={square.id}
                 />
             ))}
@@ -57,3 +90,4 @@ const Board: FC<BoardProps> = ({board}) => {
 };
 
 export default Board;
+export {squares};
