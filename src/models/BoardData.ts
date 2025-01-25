@@ -48,29 +48,29 @@ export class BoardData {
             for (let j = 0; j < this.height; j++) {
                 const square = this.squares[i][j];
                 if (j === 1) {
-                    square.setFigure(new PawnData(Colors.WHITE, square.coordinates));
+                    square.setPiece(new PawnData(Colors.WHITE, square.coordinates));
                 } else if (j === this.height - 2) {
-                    square.setFigure(new PawnData(Colors.BLACK, square.coordinates));
+                    square.setPiece(new PawnData(Colors.BLACK, square.coordinates));
                 } else if (j === 0 || j === this.height - 1) {
                     const pieceColor = j === 0 ? Colors.WHITE : Colors.BLACK;
                     switch (i) {
                         case 4:
-                            square.setFigure(new KingData(pieceColor, square.coordinates));
+                            square.setPiece(new KingData(pieceColor, square.coordinates));
                             break;
                         case 3:
-                            square.setFigure(new QueenData(pieceColor, square.coordinates));
+                            square.setPiece(new QueenData(pieceColor, square.coordinates));
                             break;
                         case 0:
                         case this.width - 1:
-                            square.setFigure(new RookData(pieceColor, square.coordinates));
+                            square.setPiece(new RookData(pieceColor, square.coordinates));
                             break;
                         case 1:
                         case this.width - 2:
-                            square.setFigure(new KnightData(pieceColor, square.coordinates));
+                            square.setPiece(new KnightData(pieceColor, square.coordinates));
                             break;
                         case 2:
                         case this.width - 3:
-                            square.setFigure(new BishopData(pieceColor, square.coordinates));
+                            square.setPiece(new BishopData(pieceColor, square.coordinates));
                             break;
                     }
                 }

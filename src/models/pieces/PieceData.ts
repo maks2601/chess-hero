@@ -29,9 +29,9 @@ export class PieceData {
     }
 
     move(board: BoardData, coords: Coordinates) {
-        board.getSquare(this.coordinates).piece = null;
+        board.getSquare(this.coordinates)?.setPiece(null);
         this.coordinates = coords;
-        board.getSquare(this.coordinates).piece = this;
+        board.getSquare(this.coordinates)?.setPiece(this);
         board.switchTurn();
     }
 

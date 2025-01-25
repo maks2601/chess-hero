@@ -17,7 +17,7 @@ export class SquareData {
         this.isAvailable = false;
     }
 
-    setFigure(figure: PieceData) {
-        this.piece = figure;
+    setPiece(piece: PieceData | null) {
+        this.piece = piece;
     }
 }
