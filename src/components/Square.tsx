@@ -15,20 +15,22 @@ interface SquareProps {
 
 const Square: FC<SquareProps> = ({square, selected, onClick, onTouch}) => {
     const squareClassName = [styles.square, styles[square.color]].join(" ");
-    const highlightClassName = [
-        square.isAvailable ? styles.available : "",
-        selected ? styles.selected : "",
-        square.piece ? styles.occupied : styles.free
-    ].join(" ");
+    const highlightOptions: string[] = [];
+    square.piece ? highlightOptions.push(styles.occupied) : highlightOptions.push(styles.free);
+    if (selected) {
+        highlightOptions.push(styles.selected)
+    } else {
+        square.isAvailable && highlightOptions.push(styles.available);
+    }
 
     return (
         <div
-            ref={(node)=> squares.set(node, square)}
+            ref={(node) => squares.set(node, square)}
             onClick={() => onClick(square)}
             className={squareClassName}
         >
             {square.piece && <Piece piece={square.piece} onTouch={onTouch}/>}
-            <div className={highlightClassName}/>
+            <div className={highlightOptions.join(" ")}/>
         </div>
     );
 };

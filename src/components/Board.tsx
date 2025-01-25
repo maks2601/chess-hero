@@ -1,6 +1,6 @@
 import Square from "./Square.tsx";
 import {BoardData} from "../models/BoardData.ts";
-import {FC, Touch, useState} from "react";
+import {FC, useState} from "react";
 import styles from "../styles/Board.module.css"
 import {SquareData} from "../models/SquareData.ts";
 import {PieceData} from "../models/pieces/PieceData.ts";
@@ -47,12 +47,12 @@ const Board: FC<BoardProps> = ({board}) => {
                             && piece.isPossibleMove(board, square.coordinates)) {
                             piece.move(board, square.coordinates);
                             setCurrentSquare(null);
-                            return;
                         }
                     } else {
-                        updateAvailableSquares(piece);
                         setCurrentSquare(square);
                     }
+
+                    updateAvailableSquares(piece);
                 }
             }
         })
@@ -79,7 +79,7 @@ const Board: FC<BoardProps> = ({board}) => {
             {transposedBoard.map(row => row.map(square =>
                 <Square
                     square={square}
-                    selected={(square === selectedSquare && square.piece !== null) || (square === currentSquare)}
+                    selected={(square === selectedSquare && square.piece !== null) || (square === currentSquare && square.isAvailable)}
                     onClick={selectSquare}
                     onTouch={touchPiece}
                     key={square.id}

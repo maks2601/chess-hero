@@ -45,14 +45,17 @@ const Piece: FC<PieceProps> = ({piece, onTouch}) => {
         });
     };
 
+    const isDragging = () => touchPosition.x !== 0 || touchPosition.y !== 0
+
     return (
         <img className={styles.piece} src={piece.logo} alt=""
-             style={{
+             style={isDragging() ? {
                  position: "absolute",
                  left: `${touchPosition.x - startPosition.x}px`,
                  top: `${touchPosition.y - startPosition.y}px`,
                  touchAction: "none",
-             }}
+                 zIndex: 1,
+             } : {}}
              onTouchStart={(e) => handleTouchStart(e.touches.item(0))}
              onTouchMove={(e) => handleTouchMove(e.touches.item(0))}
              onTouchEnd={handleTouchEnd}
