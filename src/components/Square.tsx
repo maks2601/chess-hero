@@ -27,7 +27,7 @@ const Square: FC<SquareProps> = ({square, selected, onTouch, onTouchPiece, showH
     return (
         <div
             ref={(node) => squares.set(node, square)}
-            onTouchEnd={() => onTouch(square)}
+            onPointerUp={() => onTouch(square)}
             className={squareClassName}
         >
             {square.piece && <Piece piece={square.piece} onTouch={onTouchPiece}/>}

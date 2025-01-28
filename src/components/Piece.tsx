@@ -1,5 +1,5 @@
 import {PieceData} from "../models/pieces/PieceData.ts";
-import {FC, Touch, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import styles from "../styles/Board.module.css"
 import {TouchState} from "../models/input/TouchState.ts";
 import {TouchData} from "../models/input/TouchData.ts";
@@ -9,56 +9,64 @@ interface PieceProps {
     onTouch: (piece: PieceData, touch: TouchData) => void;
 }
 
+interface Position {
+    x: number;
+    y: number;
+}
+
 const Piece: FC<PieceProps> = ({piece, onTouch}) => {
-    const [startPosition, setStartPosition] = useState({x: 0, y: 0});
-    const [touchPosition, setTouchPosition] = useState({x: 0, y: 0});
+    const [position, setPosition] = useState<Position>({x: 0, y: 0});
+    const [startPosition, setStartPosition] = useState<Position>({x: 0, y: 0});
+    const [dragging, setDragging] = useState<boolean>(false);
 
-    const handleTouchStart = (touch: Touch) => {
-        setStartPosition({
-            x: touch.clientX,
-            y: touch.clientY,
-        });
-        setTouchPosition({
-            x: touch.clientX,
-            y: touch.clientY,
-        });
-        onTouch(piece, new TouchData(touch.clientX, touch.clientY, TouchState.START));
+    const handlePointerDown = (e: React.PointerEvent<HTMLImageElement>): void => {
+        e.currentTarget.setPointerCapture(e.pointerId);
+        setDragging(true);
+        setStartPosition({x: e.clientX, y: e.clientY});
+
+        onTouch(piece, new TouchData(e.clientX, e.clientY, TouchState.START));
     };
 
-    const handleTouchMove = (touch: Touch) => {
-        setTouchPosition({
-            x: touch.clientX,
-            y: touch.clientY,
-        });
-        onTouch(piece, new TouchData(touch.clientX, touch.clientY, TouchState.PROGRESS));
+    const handlePointerMove = (e: PointerEvent): void => {
+        if (dragging) {
+            setPosition({x: e.clientX, y: e.clientY});
+            onTouch(piece, new TouchData(e.clientX, e.clientY, TouchState.PROGRESS));
+        }
     };
 
-    const handleTouchEnd = () => {
-        onTouch(piece, new TouchData(touchPosition.x, touchPosition.y, TouchState.END));
-        setStartPosition({
-            x: 0,
-            y: 0,
-        });
-        setTouchPosition({
-            x: 0,
-            y: 0,
-        });
+    const handlePointerUp = (e: PointerEvent): void => {
+        setDragging(false);
+        onTouch(piece, new TouchData(e.clientX, e.clientY, TouchState.END));
+        setPosition({x: 0, y: 0});
+        setStartPosition({x: 0, y: 0});
     };
 
-    const isDragging = () => touchPosition.x !== 0 || touchPosition.y !== 0
+    useEffect(() => {
+        if (dragging) {
+            window.addEventListener("pointermove", handlePointerMove);
+            window.addEventListener("pointerup", handlePointerUp);
+        } else {
+            window.removeEventListener("pointermove", handlePointerMove);
+            window.removeEventListener("pointerup", handlePointerUp);
+        }
+
+        return () => {
+            window.removeEventListener("pointermove", handlePointerMove);
+            window.removeEventListener("pointerup", handlePointerUp);
+        };
+    }, [dragging]);
 
     return (
         <img className={styles.piece} src={piece.logo} alt=""
-             style={isDragging() ? {
+             style={{
                  position: "absolute",
-                 left: `${touchPosition.x - startPosition.x}px`,
-                 top: `${touchPosition.y - startPosition.y}px`,
-                 touchAction: "none",
+                 left: position.x - startPosition.x,
+                 top: position.y - startPosition.y,
+                 cursor: dragging ? "grabbing" : "grab",
+                 userSelect: "none",
                  zIndex: 1,
-             } : {}}
-             onTouchStart={(e) => handleTouchStart(e.touches.item(0))}
-             onTouchMove={(e) => handleTouchMove(e.touches.item(0))}
-             onTouchEnd={handleTouchEnd}
+             }}
+             onPointerDown={(e) => handlePointerDown(e)}
         />
     );
 };
