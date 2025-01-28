@@ -6,6 +6,8 @@ import {SquareData} from "../models/SquareData.ts";
 import {PieceData} from "../models/pieces/PieceData.ts";
 import {TouchState} from "../models/input/TouchState.ts";
 import {TouchData} from "../models/input/TouchData.ts";
+import Timer from "./Timer.tsx";
+import {Colors} from "../models/Colors.ts";
 
 interface BoardProps {
     board: BoardData;
@@ -72,21 +74,25 @@ const Board: FC<BoardProps> = ({board, showHints}) => {
         : board.squares[0].map((_, colIndex) => board.squares.map(row => row[colIndex]));
 
     return (
-        <div className={styles.board} style={{
-            gridTemplateColumns: `repeat(${board.width}, 1fr)`,
-            gridTemplateRows: `repeat(${board.height}, 1fr)`,
-            aspectRatio: `${board.width}/${board.height}`,
-        }}>
-            {transposedBoard.map(row => row.map(square =>
-                <Square
-                    square={square}
-                    selected={(square === selectedSquare && square.piece !== null) || (square === currentSquare && square.isAvailable)}
-                    showHints={showHints}
-                    onTouch={selectSquare}
-                    onTouchPiece={touchPiece}
-                    key={square.id}
-                />
-            ))}
+        <div>
+            <Timer startTime={300} side={board.playingWhite ? Colors.BLACK : Colors.WHITE} sideToMove={board.sideToMove}/>
+            <div className={styles.board} style={{
+                gridTemplateColumns: `repeat(${board.width}, 1fr)`,
+                gridTemplateRows: `repeat(${board.height}, 1fr)`,
+                aspectRatio: `${board.width}/${board.height}`,
+            }}>
+                {transposedBoard.map(row => row.map(square =>
+                    <Square
+                        square={square}
+                        selected={(square === selectedSquare && square.piece !== null) || (square === currentSquare && square.isAvailable)}
+                        showHints={showHints}
+                        onTouch={selectSquare}
+                        onTouchPiece={touchPiece}
+                        key={square.id}
+                    />
+                ))}
+            </div>
+            <Timer startTime={300} side={board.playingWhite ? Colors.WHITE : Colors.BLACK} sideToMove={board.sideToMove}/>
         </div>
     );
 };

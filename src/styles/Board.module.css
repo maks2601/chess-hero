@@ -53,3 +53,17 @@
 .available.occupied {
     background-color: rgba(227, 59, 29, 0.7);
 }
+
+.timer {
+    border: 5px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    width: 150px;
+    margin: auto;
+}
+
+.timer p {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}

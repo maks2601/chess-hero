@@ -45,9 +45,6 @@ const Piece: FC<PieceProps> = ({piece, onTouch}) => {
         if (dragging) {
             window.addEventListener("pointermove", handlePointerMove);
             window.addEventListener("pointerup", handlePointerUp);
-        } else {
-            window.removeEventListener("pointermove", handlePointerMove);
-            window.removeEventListener("pointerup", handlePointerUp);
         }
 
         return () => {
