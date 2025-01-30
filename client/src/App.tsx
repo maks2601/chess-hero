@@ -10,7 +10,7 @@ function App() {
     const [roomId, setRoomId] = useState(0);
 
     useEffect(() => {
-        fetch("/api").then(res => {
+        fetch(API_ENDPOINT).then(res => {
             res.json().then((json) => {
                 setRoomId(json.roomId)
             })
@@ -32,5 +32,7 @@ function App() {
         </div>
     );
 }
+
+export const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
 export default App;
