@@ -3,10 +3,9 @@ import {Link} from "react-router-dom";
 
 const Menu = () => {
     return (
-        <div className={styles.container}>
+        <div className={styles.menuContainer}>
             <Link to="/createRoom" className={styles.button}>Create</Link>
             <Link to="/joinRoom" className={styles.button}>Join</Link>
-            <Link to="/game" className={styles.button}>Game</Link>
         </div>
     );
 };
