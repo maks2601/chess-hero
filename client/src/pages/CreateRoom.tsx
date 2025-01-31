@@ -12,7 +12,7 @@ const CreateRoom = () => {
         newBoard.fillBoard();
         axios.post(API_ENDPOINT, {board: newBoard, showHints: showHints})
             .then((res) => {
-                navigate("/game", {state: {roomId: res.data.roomId}});
+                navigate("/room/play", {state: {roomId: res.data.roomId}});
             })
             .catch((err) => console.log(err));
     }

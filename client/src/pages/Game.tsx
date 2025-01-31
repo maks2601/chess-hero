@@ -22,7 +22,6 @@ const Game = () => {
         setRoomId(location.state.roomId);
 
         axios.get(requestUrl).then(res => {
-            console.log(res);
             setBoard(res.data.board);
             setShowHints(res.data.showHints);
         });

@@ -11,7 +11,11 @@ const rooms = new Map();
 
 app.get('/:id', (req, res) => {
     const roomData = rooms.get(req.params.id);
-    res.json(roomData);
+    if (roomData) {
+        res.json(roomData);
+    } else {
+        res.status(404).send('Not Found');
+    }
 });
 
 app.post('/', (req, res) => {

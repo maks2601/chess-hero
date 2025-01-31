@@ -12,9 +12,9 @@ function App() {
             <Routes>
                 <Route element={<Layout/>}>
                     <Route path="/" element={<Menu/>}/>
-                    <Route path="/createRoom" element={<CreateRoom/>}/>
-                    <Route path="/joinRoom" element={<JoinRoom/>}/>
-                    <Route path="/game" element={<Game/>}/>
+                    <Route path="/room/create" element={<CreateRoom/>}/>
+                    <Route path="/room/join" element={<JoinRoom/>}/>
+                    <Route path="/room/play" element={<Game/>}/>
                 </Route>
             </Routes>
         </Router>

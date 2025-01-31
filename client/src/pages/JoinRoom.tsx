@@ -1,8 +1,8 @@
+import JoinRoomForm from "../components/JoinRoomForm.tsx";
+
 const JoinRoom = () => {
     return (
-        <div>
-
-        </div>
+        <JoinRoomForm/>
     );
 };
 
