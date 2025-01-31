@@ -5,9 +5,19 @@ const app = express();
 const PORT = 3000;
 
 app.use(cors({origin: ['http://localhost:5173', 'https://chess-hero-client.vercel.app']}));
+app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json({roomId: randomInInterval(1000, 10000)});
+const rooms = new Map();
+
+app.get('/:id', (req, res) => {
+    const roomData = rooms.get(req.params.id);
+    res.json(roomData);
+});
+
+app.post('/', (req, res) => {
+    const roomId = randomInInterval(1000, 10000).toString();
+    rooms.set(roomId, req.body);
+    res.json({roomId: roomId});
 });
 
 const randomInInterval = (min, max) => {

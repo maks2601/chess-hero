@@ -1,33 +1,37 @@
 import {useEffect, useState} from "react";
 import {BoardData} from "../models/BoardData.ts";
-import BoardForm from "../components/BoardForm.tsx";
 import Board from "../components/Board.tsx";
 import {API_ENDPOINT} from "../App.tsx";
+import axios from "axios";
+import {useLocation} from "react-router-dom";
 
 const Game = () => {
+    const location = useLocation();
+
     const [board, setBoard] = useState(new BoardData(8, 8, true));
     const [showHints, setShowHints] = useState(false);
     const [roomId, setRoomId] = useState(0);
 
     useEffect(() => {
-        fetch(API_ENDPOINT).then(res => {
-            res.json().then((json) => {
-                setRoomId(json.roomId)
-            })
-        });
-    }, [board]);
+        const requestUrl = API_ENDPOINT + "/" + location.state.roomId;
 
-    const createBoard = (width: number, height: number, playingWhite: boolean, showHints: boolean) => {
-        const newBoard = new BoardData(width, height, playingWhite);
-        newBoard.fillBoard();
-        setBoard(newBoard);
-        setShowHints(showHints);
-    }
+        if (roomId === location.state.roomId) {
+            return;
+        }
+
+        setRoomId(location.state.roomId);
+
+        axios.get(requestUrl).then(res => {
+            console.log(res);
+            setBoard(res.data.board);
+            setShowHints(res.data.showHints);
+        });
+    }, [roomId]);
+
 
     return (
         <div className="App">
             <p>Room id: {roomId}</p>
-            <BoardForm createBoard={createBoard}/>
             <Board board={board} showHints={showHints}/>
         </div>
     );
