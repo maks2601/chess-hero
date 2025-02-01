@@ -22,7 +22,7 @@ const Game = () => {
         setRoomId(location.state.roomId);
 
         axios.get(requestUrl).then(res => {
-            setBoard(res.data.board);
+            setBoard(BoardData.fromJSON(res.data.board));
             setShowHints(res.data.showHints);
         });
     }, [roomId]);

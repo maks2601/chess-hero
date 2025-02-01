@@ -5,12 +5,14 @@ import blackLogo from "../../assets/pieces/bK.png";
 import {SquareData} from "../SquareData.ts";
 import {BoardData} from "../BoardData.ts";
 import {Coordinates} from "../Coordinates.ts";
+import {PieceType} from "./PieceType.tsx";
 
 export class KingData extends PieceData {
     constructor(color: Colors, coordinates: Coordinates) {
         super(color, coordinates);
 
         this.logo = color === Colors.WHITE ? whiteLogo : blackLogo;
+        this.type = PieceType.KING;
     }
 
     getAvailableSquares(board: BoardData): SquareData[] {

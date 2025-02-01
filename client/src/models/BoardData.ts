@@ -7,6 +7,8 @@ import {RookData} from "./pieces/RookData.ts";
 import {BishopData} from "./pieces/BishopData.ts";
 import {QueenData} from "./pieces/QueenData.ts";
 import {Coordinates} from "./Coordinates.ts";
+import {createPiece} from "./pieces/PieceFactory.tsx";
+import {SimplifiedPiece} from "./pieces/PieceData.ts";
 
 export class BoardData {
     readonly width: number;
@@ -43,7 +45,7 @@ export class BoardData {
         return null;
     }
 
-    fillBoard() {
+    fillBoardDefault() {
         for (let i = 0; i < this.width; i++) {
             for (let j = 0; j < this.height; j++) {
                 const square = this.squares[i][j];
@@ -78,7 +80,38 @@ export class BoardData {
         }
     }
 
+    fillBoard(pieces: SimplifiedPiece[]) {
+        pieces.forEach((piece) => {
+            const square = this.getSquare(piece.coordinates);
+            if (square) {
+                square.setPiece(createPiece(piece));
+            }
+        })
+    }
+
     switchTurn() {
         this.sideToMove = this.sideToMove === Colors.WHITE ? Colors.BLACK : Colors.WHITE;
+    }
+
+    static toJSON(board: BoardData): string {
+        const pieces: SimplifiedPiece[] = [];
+        for (let i = 0; i < board.width; i++) {
+            for (let j = 0; j < board.height; j++) {
+                const square = board.getSquare(new Coordinates(i, j));
+                if (square && square.piece) {
+                    pieces.push(square.piece);
+                }
+            }
+        }
+
+        return JSON.stringify({width: board.width, height: board.height, pieces: pieces});
+    }
+
+    static fromJSON(json: string): BoardData {
+        const data = JSON.parse(json);
+        const board = new BoardData(data.width, data.height, true);
+        board.fillBoard(data.pieces);
+
+        return board;
     }
 }

@@ -3,16 +3,25 @@ import Logo from "../../assets/pieces/wP.png";
 import {SquareData} from "../SquareData.ts";
 import {BoardData} from "../BoardData.ts";
 import {Coordinates} from "../Coordinates.ts";
+import {PieceType} from "./PieceType.tsx";
 
-export class PieceData {
+export interface SimplifiedPiece {
+    type: PieceType;
+    color: Colors;
+    coordinates: Coordinates;
+}
+
+export class PieceData implements SimplifiedPiece{
     color: Colors;
     logo: typeof Logo;
     coordinates: Coordinates;
+    type: PieceType;
 
     constructor(color: Colors, coordinates: Coordinates) {
         this.color = color;
         this.logo = Logo;
         this.coordinates = coordinates;
+        this.type = PieceType.NONE;
     }
 
     // @ts-ignore

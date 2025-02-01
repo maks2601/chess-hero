@@ -9,8 +9,8 @@ const CreateRoom = () => {
 
     const createBoard = (width: number, height: number, playingWhite: boolean, showHints: boolean) => {
         const newBoard = new BoardData(width, height, playingWhite);
-        newBoard.fillBoard();
-        axios.post(API_ENDPOINT, {board: newBoard, showHints: showHints})
+        newBoard.fillBoardDefault();
+        axios.post(API_ENDPOINT, {board: BoardData.toJSON(newBoard), showHints: showHints})
             .then((res) => {
                 navigate("/room/play", {state: {roomId: res.data.roomId}});
             })
