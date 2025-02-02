@@ -12,7 +12,7 @@ const JoinRoomForm = () => {
 
     const tryJoin = (e: FormEvent) => {
         e.preventDefault();
-        axios.get(API_ENDPOINT + "/" + roomId)
+        axios.get(API_ENDPOINT + "/room/" + roomId)
             .then(res => {
                 console.log(res);
                 navigate("/room/play", {state: {roomId: roomId}});
