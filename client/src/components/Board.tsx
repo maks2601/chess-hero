@@ -8,15 +8,17 @@ import {TouchState} from "../models/input/TouchState.ts";
 import {TouchData} from "../models/input/TouchData.ts";
 import Timer from "./Timer.tsx";
 import {Colors} from "../models/Colors.ts";
+import {Move} from "../models/Move.ts";
 
 interface BoardProps {
     board: BoardData;
     showHints: boolean;
+    onMove: (move: Move) => void;
 }
 
 const squares = new Map<any, SquareData>();
 
-const Board: FC<BoardProps> = ({board, showHints}) => {
+const Board: FC<BoardProps> = ({board, showHints, onMove}) => {
     const [selectedSquare, setSelectedSquare] = useState<SquareData | null>(null);
     const [currentSquare, setCurrentSquare] = useState<SquareData | null>(null);
 
@@ -27,7 +29,7 @@ const Board: FC<BoardProps> = ({board, showHints}) => {
             setSelectedSquare(null);
         } else if (selectedSquare?.piece
             && selectedSquare.piece.isPossibleMove(board, square.coordinates)) {
-            selectedSquare.piece.move(board, square.coordinates);
+            onMove(new Move(selectedSquare.coordinates, square.coordinates));
             setSelectedSquare(null);
         } else {
             squareToSelect = square;
@@ -45,7 +47,7 @@ const Board: FC<BoardProps> = ({board, showHints}) => {
                 if (square) {
                     if (touch.state === TouchState.END) {
                         if (piece.isPossibleMove(board, square.coordinates)) {
-                            piece.move(board, square.coordinates);
+                            onMove(new Move(piece.coordinates, square.coordinates));
                             setCurrentSquare(null);
                         }
                     } else {

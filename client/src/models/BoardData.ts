@@ -9,6 +9,7 @@ import {QueenData} from "./pieces/QueenData.ts";
 import {Coordinates} from "./Coordinates.ts";
 import {createPiece} from "./pieces/PieceFactory.tsx";
 import {SimplifiedPiece} from "./pieces/PieceData.ts";
+import {Move} from "./Move.ts";
 
 export class BoardData {
     readonly width: number;
@@ -16,6 +17,7 @@ export class BoardData {
     squares: SquareData[][];
     playingWhite: boolean;
     sideToMove: Colors;
+    moves: Move[];
 
     constructor(width: number, height: number, playingWhite: boolean) {
         this.width = width;
@@ -23,6 +25,7 @@ export class BoardData {
         this.squares = [];
         this.playingWhite = playingWhite;
         this.sideToMove = Colors.WHITE;
+        this.moves = [];
         this.createBoard(width, height)
     }
 
@@ -91,6 +94,27 @@ export class BoardData {
 
     switchTurn() {
         this.sideToMove = this.sideToMove === Colors.WHITE ? Colors.BLACK : Colors.WHITE;
+    }
+
+    addMove(move: Move) {
+        this.moves.push(move);
+    }
+
+    syncMoves(moves: Move[]): boolean {
+        let updated = false;
+
+        for (let i = this.moves.length; i < moves.length; i++) {
+            const move = moves[i];
+            this.moves.push(move);
+            const square = this.getSquare(move.startPosition);
+            if (square && square.piece) {
+                square.piece.move(this, move.endPosition);
+            }
+
+            updated = true;
+        }
+
+        return updated;
     }
 
     static toJSON(board: BoardData): string {
