@@ -1,70 +1,49 @@
 import {PieceData} from "../models/pieces/PieceData.ts";
-import React, {FC, useEffect, useState} from "react";
+import {FC, useState} from "react";
 import styles from "../styles/Board.module.css"
 import {TouchState} from "../models/input/TouchState.ts";
 import {TouchData} from "../models/input/TouchData.ts";
+import Draggable, {DraggableData} from 'react-draggable';
 
 interface PieceProps {
     piece: PieceData;
     onTouch: (piece: PieceData, touch: TouchData) => void;
 }
 
-interface Position {
-    x: number;
-    y: number;
-}
-
 const Piece: FC<PieceProps> = ({piece, onTouch}) => {
-    const [position, setPosition] = useState<Position>({x: 0, y: 0});
-    const [startPosition, setStartPosition] = useState<Position>({x: 0, y: 0});
-    const [dragging, setDragging] = useState<boolean>(false);
+    const [position, setPosition] = useState({x: 0, y: 0});
 
-    const handlePointerDown = (e: React.PointerEvent<HTMLImageElement>): void => {
-        e.currentTarget.setPointerCapture(e.pointerId);
-        setDragging(true);
-        setStartPosition({x: e.clientX, y: e.clientY});
-
-        onTouch(piece, new TouchData(e.clientX, e.clientY, TouchState.START));
+    const handleDragStart = (data: DraggableData): void => {
+        const pos = data.node.getBoundingClientRect();
+        onTouch(piece, new TouchData(pos.x, pos.y, TouchState.START));
     };
 
-    const handlePointerMove = (e: PointerEvent): void => {
-        if (dragging) {
-            setPosition({x: e.clientX, y: e.clientY});
-            onTouch(piece, new TouchData(e.clientX, e.clientY, TouchState.PROGRESS));
-        }
+    const handleDrag = (data: DraggableData): void => {
+        const pos = data.node.getBoundingClientRect();
+        setPosition({x: data.x, y: data.y});
+        onTouch(piece, new TouchData(pos.x, pos.y, TouchState.PROGRESS));
     };
 
-    const handlePointerUp = (e: PointerEvent): void => {
-        setDragging(false);
-        onTouch(piece, new TouchData(e.clientX, e.clientY, TouchState.END));
+    const handleDragStop = (data: DraggableData): void => {
         setPosition({x: 0, y: 0});
-        setStartPosition({x: 0, y: 0});
+        const pos = data.node.getBoundingClientRect();
+        onTouch(piece, new TouchData(pos.x, pos.y, TouchState.END));
     };
-
-    useEffect(() => {
-        if (dragging) {
-            window.addEventListener("pointermove", handlePointerMove);
-            window.addEventListener("pointerup", handlePointerUp);
-        }
-
-        return () => {
-            window.removeEventListener("pointermove", handlePointerMove);
-            window.removeEventListener("pointerup", handlePointerUp);
-        };
-    }, [dragging]);
 
     return (
-        <img className={styles.piece} src={piece.logo} alt=""
-             style={{
-                 position: "absolute",
-                 left: position.x - startPosition.x,
-                 top: position.y - startPosition.y,
-                 cursor: dragging ? "grabbing" : "grab",
-                 userSelect: "none",
-                 zIndex: 1,
-             }}
-             onPointerDown={(e) => handlePointerDown(e)}
-        />
+        <Draggable
+            position={position}
+            onStart={(_, data) => handleDragStart(data)}
+            onDrag={(_, data) => handleDrag(data)}
+            onStop={(_, data) => handleDragStop(data)}
+        >
+            <img className={styles.piece} src={piece.logo} alt=""
+                 style={{
+                     userSelect: "none",
+                     zIndex: 1,
+                 }}
+            />
+        </Draggable>
     );
 };
 
