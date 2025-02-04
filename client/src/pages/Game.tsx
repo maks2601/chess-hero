@@ -8,8 +8,6 @@ import {Move} from "../models/Move.ts";
 
 const Game = () => {
     const location = useLocation();
-
-    const [board, setBoard] = useState(new BoardData(8, 8, true));
     const [showHints, setShowHints] = useState(false);
     const [roomId, setRoomId] = useState(0);
     const [, setMoves] = useState<Move[]>([]);
@@ -24,37 +22,42 @@ const Game = () => {
         setRoomId(location.state.roomId);
 
         axios.get(requestUrl).then(res => {
-            setBoard(BoardData.fromJSON(res.data.board));
+            BoardData.current = BoardData.fromJSON(res.data.board);
             setShowHints(res.data.showHints);
+            listenMoves();
         });
-    }, [roomId]);
 
-    useEffect(() => {
-        const syncMoves = () => {
+        let eventSource: EventSource | null = null;
+
+        const listenMoves = () => {
             const requestUrl = API_ENDPOINT + "/room/" + location.state.roomId + "/moves";
-            axios.get(requestUrl).then(res => {
-                if (board.syncMoves(res.data)) {
-                    setMoves(res.data);
+            eventSource = new EventSource(requestUrl);
+
+            eventSource.onmessage = (event) => {
+                const moves = JSON.parse(event.data);
+                if (BoardData.current.syncMoves(moves)) {
+                    setMoves(moves);
                 }
-            });
+            };
+
+            eventSource.onerror = (error) => {
+                console.error("SSE error:", error);
+                eventSource?.close();
+            };
         }
 
-        const interval = setInterval(syncMoves, 500);
-
-        return () => clearInterval(interval);
-    });
+        return () => eventSource?.close();
+    }, [roomId]);
 
     const onMove = (move: Move) => {
         const requestUrl = API_ENDPOINT + "/room/" + location.state.roomId + "/moves";
-        setMoves(prev => prev.concat(move));
         axios.put(requestUrl, move).then(res => res);
     }
-
 
     return (
         <div className="App">
             <p>Room id: {roomId}</p>
-            <Board board={board} showHints={showHints} onMove={onMove}/>
+            {BoardData.current && <Board board={BoardData.current} showHints={showHints} onMove={onMove}/>}
         </div>
     );
 }

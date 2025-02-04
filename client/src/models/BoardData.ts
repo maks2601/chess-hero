@@ -18,6 +18,7 @@ export class BoardData {
     playingWhite: boolean;
     sideToMove: Colors;
     moves: Move[];
+    static current: BoardData;
 
     constructor(width: number, height: number, playingWhite: boolean) {
         this.width = width;
@@ -26,7 +27,8 @@ export class BoardData {
         this.playingWhite = playingWhite;
         this.sideToMove = Colors.WHITE;
         this.moves = [];
-        this.createBoard(width, height)
+        this.createBoard(width, height);
+        BoardData.current = this;
     }
 
     createBoard(width: number, height: number) {
@@ -123,7 +125,11 @@ export class BoardData {
             for (let j = 0; j < board.height; j++) {
                 const square = board.getSquare(new Coordinates(i, j));
                 if (square && square.piece) {
-                    pieces.push(square.piece);
+                    pieces.push({
+                        color: square.piece.color,
+                        coordinates: square.piece.coordinates,
+                        type: square.piece.type
+                    });
                 }
             }
         }
