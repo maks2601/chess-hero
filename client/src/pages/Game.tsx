@@ -43,6 +43,7 @@ const Game = () => {
             eventSource.onerror = (error) => {
                 console.error("SSE error:", error);
                 eventSource?.close();
+                setTimeout(listenMoves, 5000);
             };
         }
 

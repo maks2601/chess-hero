@@ -7,7 +7,11 @@ const app = express();
 const PORT = 3000;
 const emitter = new Emitter();
 
-app.use(cors({origin: ['http://localhost:5173', 'https://chess-hero-client.vercel.app']}));
+app.use(cors({
+    origin: ['http://localhost:5173', 'https://chess-hero-client.vercel.app'],
+    allowedHeaders: ["Content-Type"],
+    exposedHeaders: ["Content-Type"],
+}));
 app.use(express.json());
 
 const rooms = new Map();
