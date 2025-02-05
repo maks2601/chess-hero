@@ -45,7 +45,8 @@ app.get("/room/:id/moves", (req, res) => {
     res.setHeader("Content-Type", "text/event-stream");
     res.setHeader("Cache-Control", "no-cache");
     res.setHeader("Connection", "keep-alive");
-    res.setHeader("Content-Encoding", "none");
+    res.setHeader("Access-Control-Allow-Origin", "*"); // Allow SSE across origins
+    res.setHeader("Access-Control-Allow-Methods", "GET");
 
     const moves = rooms.get(req.params.id).moves;
     res.write(`data:${JSON.stringify(moves)}\n\n`);
